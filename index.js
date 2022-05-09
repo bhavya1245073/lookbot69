@@ -10,7 +10,7 @@ const bot = new Telegraf(config.telegram_token);
 const delay = ms => new Promise(resolve => setTimeout(resolve, ms))
 bot.command('start', ctx => {
     console.log(ctx.from)
-    bot.telegram.sendMessage(ctx.chat.id, 'Hello There! 🤗\nWelcome to Weblookup bot!\nYou can check status of website by using Telegram!\n\n-/start - Welcome to bot!\n-/upordown - Check this website are up or down?\n-/screenshot - Screenshot Webpage\n-/fullpagescreenshot - Screenshot Webpage with full page\n-/record - Recording Video while Webpage is loading.\n\nAzure Sign up Bot (Demo)\n\n-/devplan email:pass - Auto register azure (Developer plan)\n\nWARNING: MAKE SURE YOUR DONE AZURE REGISTER STEP! (Legal info, Number phone verfiy, Payment Methods)\n\nVideo manager\n\n-/ytvideo <URL> - Download youtube video to Telegram\n\n\nDeveloper: https://t.me/MeowKawaiiii', {
+    bot.telegram.sendMessage(ctx.chat.id, 'Hello There! 🤗\nWelcome to Weblookup bot!\nYou can check status of website by using Telegram!\n\n-/start - Welcome to bot!\n-/upordown - Check this website are up or down?\n-/screenshot - Screenshot Webpage\n-/fullpagescreenshot - Screenshot Webpage with full page\n-/record - Recording Video while Webpage is loading.\n\nAzure Sign up Bot (Demo)\n\n-/devplan email:pass - Auto register azure (Developer plan)\n\nWARNING: MAKE SURE YOUR DONE AZURE REGISTER STEP! (Legal info, Number phone verfiy, Payment Methods)\n\nVideo manager\n\n-/ytvideo <URL> - Download youtube video to Telegram\n\n\nDeveloper: https://t.me/HeckerMan', {
     })
 })
 bot.command('upordown', ctx => {
@@ -36,24 +36,25 @@ bot.command('upordown', ctx => {
             }
           
           if(response.statusCode == 200 || response.statusCode == 201 || response.statusCode == 202){
-            bot.telegram.sendMessage(ctx.chat.id,"✅Checking success✅\n\nStatus: 200 (Website is up!!!)\nHost: " + url + "\n\nCheck by: @" + ctx.from.username + "\nDeveloper: @MeowKawaiiii")
+            bot.telegram.sendMessage(ctx.chat.id,"✅Checking success✅\n\nStatus: 200 (Website is up!!!)\nHost: " + url + "\n\nCheck by: @" + ctx.from.username + "\nDeveloper: @HeckerMan")
             return false;
+              
           }
           
           if(response.statusCode == 301 || response.statusCode == 302){
-            bot.telegram.sendMessage(ctx.chat.id,"✅Checking success✅\n\nStatus: 301 (Website just redirecting.)\nHost: " + url + "\n\nCheck by: @" + ctx.from.username + "\nDeveloper: @MeowKawaiiii")
+            bot.telegram.sendMessage(ctx.chat.id,"✅Checking success✅\n\nStatus: 301 (Website just redirecting.)\nHost: " + url + "\n\nCheck by: @" + ctx.from.username + "\nDeveloper: @HeckerMan")
             return false;
           }
           
           if(response.statusCode == 401){
-            bot.telegram.sendMessage(ctx.chat.id,"✅Checking success✅\n\nStatus: 401 (You are unauthorized.)\nHost: " + url + "\n\nCheck by: @" + ctx.from.username + "\nDeveloper: @MeowKawaiiii")
+            bot.telegram.sendMessage(ctx.chat.id,"✅Checking success✅\n\nStatus: 401 (You are unauthorized.)\nHost: " + url + "\n\nCheck by: @" + ctx.from.username + "\nDeveloper: @HeckerMan")
             return false;
           }
           if(response.statusCode == 404){
-            bot.telegram.sendMessage(ctx.chat.id,"✅Checking success✅\n\nStatus: 404 (Page not found!)\nHost: " + url + "\n\nCheck by: @" + ctx.from.username + "\nDeveloper: @MeowKawaiiii")
+            bot.telegram.sendMessage(ctx.chat.id,"✅Checking success✅\n\nStatus: 404 (Page not found!)\nHost: " + url + "\n\nCheck by: @" + ctx.from.username + "\nDeveloper: @HeckerMan")
             return false;
           }else{
-            bot.telegram.sendMessage(ctx.chat.id,"✅Checking success✅\n\nStatus: " + response.statusCode + " (Maybe down?, Unknown)\nHost: " + url + "\n\nCheck by: @" + ctx.from.username + "\nDeveloper: @MeowKawaiiii")
+            bot.telegram.sendMessage(ctx.chat.id,"✅Checking success✅\n\nStatus: " + response.statusCode + " (Maybe down?, Unknown)\nHost: " + url + "\n\nCheck by: @" + ctx.from.username + "\nDeveloper: @HeckerMan")
           }
         });
     }
@@ -88,7 +89,7 @@ bot.command('fullpagescreenshot', ctx => {
             await delay(3000);
             await fullPageScreenshot(page, { path:'./images/' + ctx.from.username + '.png' });
             await browser.close();
-            ctx.replyWithPhoto({ source:'./images/' + ctx.from.username + '.png' }, {caption: "✅Screenshot success✅\nHost: " + url + "\n\nScreenshot By: @" + ctx.from.username + "\nDeveloper: @MeowKawaiiii"});
+            ctx.replyWithPhoto({ source:'./images/' + ctx.from.username + '.png' }, {caption: "✅Screenshot success✅\nHost: " + url + "\n\nScreenshot By: @" + ctx.from.username + "\nDeveloper: @HeckerMan"});
          })();
         }
         catch(e){
@@ -127,7 +128,7 @@ bot.command('screenshot', ctx => {
           await delay(3000);
           await page.screenshot({ path: './images/' + ctx.from.username + '.png' });
           await browser.close();
-          ctx.replyWithPhoto({ source: './images/' + ctx.from.username + '.png' }, {caption: "✅Screenshot success✅\nHost: " + url + "\n\nScreenshot By: @" + ctx.from.username + "\nDeveloper: @MeowKawaiiii"});
+          ctx.replyWithPhoto({ source: './images/' + ctx.from.username + '.png' }, {caption: "✅Screenshot success✅\nHost: " + url + "\n\nScreenshot By: @" + ctx.from.username + "\nDeveloper: @HeckerMan"});
        })();
       }
       catch(e){
@@ -167,7 +168,7 @@ bot.command('record', ctx => {
           await delay(3000);
           await recorder.stop();
           await browser.close();
-          ctx.replyWithVideo({ source: './videos/' + ctx.from.username + '.mp4' }, {caption: "✅Recording success✅\nHost: " + url + "\n\nEvent By: @" + ctx.from.username + "\nDeveloper: @MeowKawaiiii"});
+          ctx.replyWithVideo({ source: './videos/' + ctx.from.username + '.mp4' }, {caption: "✅Recording success✅\nHost: " + url + "\n\nEvent By: @" + ctx.from.username + "\nDeveloper: @HeckerMan"});
        })();
       }
       catch(e){
@@ -244,7 +245,7 @@ bot.command('devplan', ctx => {
           ctx.replyWithPhoto({source: './images/' + ctx.from.username + '.png'})
           await recorder.stop();
           await browser.close();
-          ctx.replyWithVideo({ source: './videos/' + ctx.from.username + '.mp4' }, {caption: "✅Recording success✅\nHost: " + url + "\n\nEvent By: @" + ctx.from.username + "\nDeveloper: @MeowKawaiiii"});
+          ctx.replyWithVideo({ source: './videos/' + ctx.from.username + '.mp4' }, {caption: "✅Recording success✅\nHost: " + url + "\n\nEvent By: @" + ctx.from.username + "\nDeveloper: @HeckerMan"});
        })();
       }
       catch(e){
@@ -264,7 +265,7 @@ bot.command('ytvideo', ctx => {
     try{
       ytdl(url, {filter: 'audioandvideo'}).pipe(fs.createWriteStream(('./videos/' + ctx.from.username+ '.mp4')).on("finish", function() {
         console.log("Finished!");
-        ctx.replyWithVideo({ source: './videos/' + ctx.from.username + '.mp4' }, {caption: "✅Download Youtube Video Success✅\n\n\nEvent By: @" + ctx.from.username + "\nDeveloper: @MeowKawaiiii"});
+        ctx.replyWithVideo({ source: './videos/' + ctx.from.username + '.mp4' }, {caption: "✅Download Youtube Video Success✅\n\n\nEvent By: @" + ctx.from.username + "\nDeveloper: @HeckerMan"});
       }));
     }
     catch(e){
