@@ -1,2 +1,2 @@
 Scuessfully Stole Your credits 
-Telegram - t.me/heckerman
+#Telegram - t.me/heckerman
