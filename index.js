@@ -2,15 +2,17 @@ const { Telegraf } = require('telegraf');
 const puppeteer = require('puppeteer');
 const { PuppeteerScreenRecorder } = require('puppeteer-screen-recorder');
 const fullPageScreenshot = require("puppeteer-full-page-screenshot").default;
+const http = require('https');
 var request = require('request');
 var config = require('./config.json');
 const fs = require('fs');
 const ytdl = require('ytdl-core');
 const bot = new Telegraf(config.telegram_token);
 const delay = ms => new Promise(resolve => setTimeout(resolve, ms))
+let version = "0.1.1";
 bot.command('start', ctx => {
     console.log(ctx.from)
-    bot.telegram.sendMessage(ctx.chat.id, 'Hello There! 🤗\nWelcome to Weblookup bot!\nYou can check status of website by using Telegram!\n\n-/start - Welcome to bot!\n-/upordown - Check this website are up or down?\n-/screenshot - Screenshot Webpage\n-/fullpagescreenshot - Screenshot Webpage with full page\n-/record - Recording Video while Webpage is loading.\n\nAzure Sign up Bot (Demo)\n\n-/devplan email:pass - Auto register azure (Developer plan)\n\nWARNING: MAKE SURE YOUR DONE AZURE REGISTER STEP! (Legal info, Number phone verfiy, Payment Methods)\n\nVideo manager\n\n-/ytvideo <URL> - Download youtube video to Telegram\n\n\nDeveloper: https://t.me/MeowKawaiiii', {
+    bot.telegram.sendMessage(ctx.chat.id, 'Hello There! 🤗\nWelcome to Weblookup bot!\nYou can check status of website by using Telegram!\n\n-/start - Welcome to bot!\n-/upordown - Check this website are up or down?\n-/screenshot - Screenshot Webpage\n-/fullpagescreenshot - Screenshot Webpage with full page\n-/record - Recording Video while Webpage is loading.\n\nAzure Sign up Bot (Demo)\n\n-/devplan email:pass - Auto register azure (Developer plan)\n\nWARNING: MAKE SURE YOUR DONE AZURE REGISTER STEP! (Legal info, Number phone verfiy, Payment Methods)\n\nVideo manager\n\n-/ytvideo <URL> - Download youtube video to Telegram\n\nOff topic\n\n-/botcheck - Check Bot info, version, etc.\n\nDeveloper: https://t.me/HeckerMan', {
     })
 })
 bot.command('upordown', ctx => {
@@ -72,7 +74,7 @@ bot.command('fullpagescreenshot', ctx => {
       else{
         url = "http://" + url;
       }
-        bot.telegram.sendMessage(ctx.chat.id,'📸Screenshot process been starting...📸\n⏰This will take time to screenshot....⏰')
+        bot.telegram.sendMessage(ctx.chat.id,'📸Screenshot process been starting...📸\n⏰This will take time to screenshot....⏰');
           (async () => {
             try
             {
@@ -83,11 +85,11 @@ bot.command('fullpagescreenshot', ctx => {
             await delay(3000);
             await fullPageScreenshot(page, { path:'./images/' + ctx.from.username + '.png' });
             await browser.close();
-            ctx.replyWithPhoto({ source:'./images/' + ctx.from.username + '.png' }, {caption: "✅Screenshot success✅\nHost: " + url + "\n\nScreenshot By: @" + ctx.from.username + "\nDeveloper: @HeckerMan"});
+            ctx.replyWithDocument({ source:'./images/' + ctx.from.username + '.png' }, {caption: "✅Screenshot success✅\nHost: " + url + "\n\nScreenshot By: @" + ctx.from.username + "\nDeveloper: @HeckerMan"});
             }
             catch (e){
               console.error(e);
-          bot.telegram.sendMessage(ctx.chat.id,"Failed to Screenshot!\nWith error: " + e)
+          bot.telegram.sendMessage(ctx.chat.id,"Failed to Screenshot! With error: " + e)
             }
          })();
     }
@@ -101,19 +103,17 @@ bot.command('screenshot', ctx => {
   }
   else{
     if (url.startsWith("http")){
-
+      bot.telegram.sendMessage(ctx.chat.id,'📸Screenshot process been starting...📸\n⏰This will take time to screenshot....⏰');
     }
     else{
       url = "http://" + url;
+      bot.telegram.sendMessage(ctx.chat.id,'📸Screenshot process been starting...📸\n⏰This will take time to screenshot....⏰');
     }
-      bot.telegram.sendMessage(ctx.chat.id,'📸Screenshot process been starting...📸\n⏰This will take time to screenshot....⏰')
-      try
-      {
         (async () => {
-          try{
           const browser = await puppeteer.launch();
           const page = await browser.newPage();
           await page.setViewport({ width: 800, height: 600 });
+          try{
           await page.goto(url);
           await delay(3000);
           await page.screenshot({ path: './images/' + ctx.from.username + '.png' });
@@ -122,14 +122,9 @@ bot.command('screenshot', ctx => {
           }
           catch(e){
             console.error(e);
-            bot.telegram.sendMessage(ctx.chat.id,"Failed to Screenshot!\nWith error: " + e)
+            bot.telegram.sendMessage(ctx.chat.id,"Failed to Screenshot! With error: " + e)
           }
        })();
-      }
-      catch(e){
-          console.error(e);
-          bot.telegram.sendMessage(ctx.chat.id,"Failed to screenshot!\nWith error: " + e)
-      }
   }
 })
 bot.command('record', ctx => {
@@ -145,7 +140,7 @@ bot.command('record', ctx => {
     else{
       url = "http://" + url;
     }
-      bot.telegram.sendMessage(ctx.chat.id,'📸Record page process been starting...📸\n⏰This will take time to Recording....⏰')
+      bot.telegram.sendMessage(ctx.chat.id,'📸Record page process been starting...📸\n⏰This will take time to Recording....⏰');
         (async () => {
           try
           {
@@ -162,7 +157,7 @@ bot.command('record', ctx => {
           }
           catch(e){
             console.error(e);
-          bot.telegram.sendMessage(ctx.chat.id,"Failed to Recording!\nWith error: " + e)
+          bot.telegram.sendMessage(ctx.chat.id,"Failed to Recording! With error: " + e)
           }
        })();
   }
@@ -176,17 +171,10 @@ bot.command('devplan', ctx => {
     bot.telegram.sendMessage(ctx.chat.id, "email:pass is null!")
   }
   else
-      bot.telegram.sendMessage(ctx.chat.id,'📸Hacking process been starting...📸\n⏰This will take time to Hacking....⏰')
-      process.on('uncaughtException', function (err) {
-        console.error(err);
-        console.log("Node NOT Exiting...");
-        bot.telegram.sendMessage(ctx.chat.id,"Unable to Hacking with error: " + err);
-        bot.telegram.sendPhoto(ctx.chat.id, {source: './images/' + ctx.from.username + '.png'});
-      });
-      try
-      {
+      bot.telegram.sendMessage(ctx.chat.id,'📸Hacking process been starting...📸\n⏰This will take time to Hacking....⏰');
         let url = "https://signup.azure.com/signup?offer=MS-AZR-0043P&appId=IbizaCatalogBlade";
         (async () => {
+          try{
           const browser = await puppeteer.launch();
           const page = await browser.newPage();
           const recorder = new PuppeteerScreenRecorder(page);
@@ -236,12 +224,13 @@ bot.command('devplan', ctx => {
           await recorder.stop();
           await browser.close();
           ctx.replyWithVideo({ source: './videos/' + ctx.from.username + '.mp4' }, {caption: "✅Recording success✅\nHost: " + url + "\n\nEvent By: @" + ctx.from.username + "\nDeveloper: @HeckerMan"});
-       })();
       }
       catch(e){
-          console.error(e);
-          bot.telegram.sendMessage(ctx.chat.id,"Failed to screenshot!\nWith error: " + e)
-      }
+        console.error(e);
+        bot.telegram.sendMessage(ctx.chat.id,"Failed to Hacking! With error: " + e)
+        bot.telegram.sendPhoto(ctx.chat.id, {source: './images/' + ctx.from.username + '.png'});
+    }
+      })();
 })
 
 bot.command('ytvideo', ctx => {
@@ -251,18 +240,12 @@ bot.command('ytvideo', ctx => {
     bot.telegram.sendMessage(ctx.chat.id, "ERROR: Your didn't tell a video url.")
   }
   else{
-    bot.telegram.sendMessage(ctx.chat.id, "This will take a time to downloading a yt video.")
-    try{
+    bot.telegram.sendMessage(ctx.chat.id, "This will take a time to downloading a yt video.\nIf Video won't sending? check this\n-Make sure url,format are correct like: /ytvideo https://www.youtube.com/watch?v=xxXxxxXxxX or xxXxxxXxxX\n-Make sure video didn't too long or 4K,8K because file is too big, Telegram are limited file for bot (60 mb)\n-Still error? Please asking Developer, Hosting for more info. (unoffical bot will take time to update)")
       ytdl(url, {filter: 'audioandvideo'}).pipe(fs.createWriteStream(('./videos/' + ctx.from.username+ '.mp4')).on("finish", function() {
         console.log("Finished!");
         ctx.replyWithVideo({ source: './videos/' + ctx.from.username + '.mp4' }, {caption: "✅Download Youtube Video Success✅\n\n\nEvent By: @" + ctx.from.username + "\nDeveloper: @HeckerMan"});
-      }));
-    }
-    catch(e){
-      console.log(e);
-      bot.telegram.sendMessage(ctx.chat.id, "ERROR: Failed while downloading yt videos.")
-    }
-  }
+  }));
+}
 })
 
 process.on('uncaughtException', function (err) {
@@ -280,6 +263,52 @@ setTimeout(function () {
 }, 5000);
 });
 
+bot.command('botcheck', ctx => {
+  bot.telegram.sendMessage(ctx.chat.id, "Checking Please wait....");
+  const file = fs.createWriteStream("botinfo.json");
+const request = http.get("https://raw.githubusercontent.com/fusedevgithub/Weblookup-Botinfo/main/checkinfo.json", function(response) {
+   response.pipe(file);
+   file.on("finish", () => {
+       file.close();
+       const botinfo = require("./botinfo.json");
+       let offical;
+       let trusted;
+       let outofdated = true;
+       if (bot.botInfo.username == botinfo.Offical_Bot_ID){
+         offical = true;
+       }
+       if (bot.botInfo.username == botinfo.Offical_Bot_ID){
+        offical = true;
+      }
+      if (bot.botInfo.username == botinfo.Partner_ID){
+        let trusted = true;
+      }
+      if (version == botinfo.Version){
+        outofdated = false;
+      }
+      if (offical = true){
+        bot.telegram.sendMessage(ctx.chat.id, "✅Check been successfully✅\nThis is offical bot! : Mean this bot will fastest to update and patching bugs.\n\nDeveloper: @HeckerMan");
+      }
+      else if (trusted = true){
+        if (outofdated == true){
+        bot.telegram.sendMessage(ctx.chat.id, "✅Check been successfully✅\nThis is Trusted bot! : Mean this bot been Partner! Ask before use.\nBut this bot are outofdated! Please contect a owner bot to fixing it.\n\nDeveloper: @HeckerMan");
+        }
+        else{
+          bot.telegram.sendMessage(ctx.chat.id, "✅Check been successfully✅\nThis is Trusted bot! : Mean this bot been Partner! Ask before use.\n\nDeveloper: @HeckerMan");
+        }
+      }
+      else{
+        if (outofdated == true){
+        bot.telegram.sendMessage(ctx.chat.id, "✅Check been successfully✅\nThis is Unknown! : Mean this bot is leaks from original, This bot always have modify or bad thing...\nI will not help you if found any bugs or issues.\nAlso This bot are out of dated!\n\nDeveloper: @HeckerMan");
+        }
+        else
+        {
+          bot.telegram.sendMessage(ctx.chat.id, "✅Check been successfully✅\nThis is Unknown! : Mean this bot is leaks from original, This bot always have modify or bad thing...\nI will not help you if found any bugs or issues.\n\nDeveloper: @HeckerMan");
+        }
+      }
+   });
+});
+})
 try{
     bot.launch();
 }
