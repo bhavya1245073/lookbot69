@@ -1,4 +1,5 @@
-Scuessfully Stole Your credits 
+Scuessfully Stole Your credits
 
 
-Telegram - https://t.me/heckerman
+Telegram - https://t.me/@fakewomenhecker
+
